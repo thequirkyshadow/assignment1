@@ -1,0 +1,9 @@
+/* GLOBAL STYLING CLASSES */
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.MuiDialog-paper{
+    height: 80vh;
+}
