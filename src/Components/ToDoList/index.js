@@ -16,16 +16,17 @@ const ToDoList = props => {
     const [selectedItem, setSelectedItem] = React.useState(null);
     const [selectedItemIndex, setSelectedItemIndex] = React.useState(null);
     const [list, setList] = React.useState([]);
-
-    const onComplete = (index) => {
+    
+    const onComplete = (index) => { // Code for when we click on task complete
         let copyList = Array.from(list);
         copyList[index]['done'] = true;
         setList(copyList);
 
         localStorage.setItem('list', JSON.stringify(copyList));
+        alert('Done');
     }
 
-    const onDelete = (index) => {
+    const onDelete = (index) => { // Code for when we click on delete
         let copyList = Array.from(list);
         copyList.splice(index, 1);
         setList(copyList);
@@ -34,14 +35,14 @@ const ToDoList = props => {
 
     }
 
-    const onEdit = (index) => {
+
+    const onEdit = (index) => { // Code for when we click on edit button on card to open dialog
         setSelectedItem(list[index]);
         setSelectedItemIndex(index);
         setOpen(true);
-
     }
 
-    const editListItem = (index, item) => {
+    const editListItem = (index, item) => { //Code for edit functionality
         let copyList = Array.from(list);
         copyList.splice(index, 1, item);
         setList(copyList);
@@ -49,14 +50,10 @@ const ToDoList = props => {
 
     }
 
-
-
-
-
-    const closeEdit = () => {
+    const closeEdit = () => { //code for closing edit dialog
         setOpen(false);
     }
-    const addToList = (item) => {
+    const addToList = (item) => { //code for add functionality
         let copyList = Array.from(list);
         copyList.push(item);
         setList(copyList);
@@ -66,6 +63,7 @@ const ToDoList = props => {
 
 
     useEffect(() => {
+      
         if (open === false) {
             setSelectedItem(null);
             setSelectedItemIndex(null);
@@ -73,6 +71,8 @@ const ToDoList = props => {
     }, [open])
 
     useEffect(() => {
+
+        //code for getting list from storage on page load
         let savedList = localStorage.getItem('list', list);
         
         if (savedList && savedList.length > 0) {
@@ -81,12 +81,9 @@ const ToDoList = props => {
 
         }
 
-
-
-
-
     }, [])
 
+    
 
 
 

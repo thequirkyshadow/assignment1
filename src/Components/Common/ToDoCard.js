@@ -24,7 +24,7 @@ export default function ToDoCard(props) {
             <CardActions sx={{ flexDirection: 'row-reverse' }}>
                 {props.status ? null : <Button onClick={() => { props.onComplete(props.index) }}>  <DoneIcon /> </Button>}
                 {props.status ? null : <Button onClick={() => { props.onEdit(props.index) }}>  <EditIcon /> </Button>}
-                <Button> <DeleteIcon onClick={() => { props.onDelete(props.index) }} /></Button>
+                <Button onClick={() => { props.onDelete(props.index) }}> <DeleteIcon /></Button>
 
             </CardActions>
         </Card>

@@ -38,51 +38,50 @@ export default function DialogForm(props) {
     }
 
     useEffect(() => {
-        if (props.open) {
+        if (props.open && props.selectedItemIndex != null) {
             setOpen(true);
             setTaskName(props.selectedItem.task);
             setTaskDesc(props.selectedItem.desc);
         }
     }, [props.open])
 
-    // useEffect(() => {
 
-    //     const listener = event => {
-    //         if (event.code === "Enter" || event.code === "NumpadEnter") {
-    //             event.preventDefault();
-    //             console.log('!!!!!!!!!!!!!!!!');
-    //             if (taskName.length > 0 && taskName.length > 0) {
-    //                 console.log('bruh');
-    //                 handleAdd();
-    //             }
+    const handleKeypress = e => {
+        console.log(e)
+        if (e.charCode === 13) {
+            handleAdd();
+        }
+    };
 
-    //         }
-    //     };
-    //     document.addEventListener("keydown", listener);
-    //     return () => {
-    //         document.removeEventListener("keydown", listener);
-    //     };
-    // }, []);
+
+
 
     const handleAdd = () => {
-        let newTask = {
-            task: taskName,
-            desc: taskDesc,
-            done: false
-        }
 
-        if (props.open) {
-            props.editListItem(props.selectedItemIndex, newTask);
-            alert('Done');
+        if (taskName.length > 0 && taskDesc.length > 0) {
+            let newTask = {
+                task: taskName,
+                desc: taskDesc,
+                done: false
+            }
+
+            if (props.open && props.selectedItemIndex != null) {
+                props.editListItem(props.selectedItemIndex, newTask);
+                alert('Done');
+            } else {
+                props.addToList(newTask);
+                alert('Done');
+            }
+
+            setTaskName('');
+            setTaskDesc('');
+            handleClose();
+
+
         } else {
-            props.addToList(newTask);
-            alert('Done');
+            alert('Fill all fields');
         }
 
-        setTaskName('');
-        setTaskDesc('');
-        handleClose();
-        
     }
 
 
@@ -93,9 +92,10 @@ export default function DialogForm(props) {
                 Add Task
             </Button>
 
-            <Dialog class="dialogHeight"  fullWidth open={open} onClose={handleClose}>
-                <DialogTitle>{props.open ? 'Edit Task' : 'Add New Task'}</DialogTitle>
+            <Dialog className="dialogHeight" fullWidth open={open} onClose={handleClose}>
+                <DialogTitle>{props.open && props.selectedItemIndex != null ? 'Edit Task' : 'Add New Task'}</DialogTitle>
                 <DialogContent>
+                    <p style={{fontStyle: 'italic'}}>NOTE: You can press enter while filling to submit the data</p>
                     <TextField
                         autoFocus
                         margin="dense"
@@ -106,6 +106,7 @@ export default function DialogForm(props) {
                         variant="standard"
                         value={taskName}
                         onChange={(e) => handleChange('taskName', e.target.value)}
+                        onKeyPress={handleKeypress}
                     />
                     <br />
                     <br />
@@ -118,12 +119,13 @@ export default function DialogForm(props) {
                         fullWidth
                         rows={25}
                         rowsMax={50}
+                        onKeyPress={handleKeypress}
                         onChange={(e) => handleChange('taskDesc', e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" onClick={handleAdd}>{props.open ? 'Update' : 'Add'}</Button>
+                    <Button variant="contained" onClick={handleAdd}>{props.open & props.selectedItemIndex != null ? 'Update' : 'Add'}</Button>
                 </DialogActions>
             </Dialog>
         </div>
